@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTT Subscription Store</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #121212;
+      color: #f5f5f5;
+      line-height: 1.6;
+      padding: 0;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 100%;
+      padding: 15px;
+      margin: 0 auto;
+    }
+
+    /* Header Styles */
+    header {
+      background: #1f1f1f;
+      padding: 15px 0;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .logo h1 {
+      font-size: 22px;
+      color: #ff9800;
+    }
+
+    /* Plans Section */
+    .plans-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .plan {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      text-align: center;
+      position: relative;
+    }
+
+    .plan img {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+      margin-bottom: 15px;
+      border-radius: 10px;
+    }
+
+    .plan h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .price-options {
+      margin-bottom: 15px;
+      color: #bbb;
+      line-height: 1.8;
+    }
+
+    .price-options .best-value {
+      color: #ff9800;
+      font-weight: bold;
+    }
+
+    .plan select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      background: #2a2a2a;
+      color: white;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+
+    .buy-btn {
+      background: #ff9800;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+      transition: background 0.3s;
+    }
+
+    .buy-btn:hover {
+      background: #e68900;
+    }
+
+    /* Payment Section */
+    #payment {
+      display: none;
+      background: #1f1f1f;
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px auto;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+
+    #payment h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #ff9800;
+    }
+
+    .qr-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .qr-container img {
+      max-width: 100%;
+      border: 2px solid #ff9800;
+      border-radius: 10px;
+      padding: 10px;
+      background: white;
+    }
+
+    #orderDetails {
+      text-align: center;
+      font-size: 16px;
+      margin: 15px 0;
+      padding: 10px;
+      background: rgba(255, 152, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    #payment form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    #payment input {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #444;
+      background: #2a2a2a;
+      color: #fff;
+      font-size: 16px;
+    }
+
+    #payment button {
+      background: #ff9800;
+      color: #000;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #payment button:hover {
+      background: #e68900;
+    }
+
+    /* Support Button */
+    .support-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ff9800;
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      z-index: 100;
+    }
+
+    .support-btn:hover {
+      background: #e68900;
+    }
+
+    .support-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .support-content {
+      background: #1f1f1f;
+      padding: 25px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 350px;
+      text-align: center;
+      position: relative;
+    }
+
+    .support-content h3 {
+      margin-top: 0;
+      color: #ff9800;
+    }
+
+    .support-content a {
+      color: #ff9800;
+      text-decoration: none;
+      display: block;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+
+    .support-content a:hover {
+      text-decoration: underline;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    /* Payment Instructions */
+    .payment-instructions {
+      background: rgba(255, 152, 0, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .payment-instructions h3 {
+      color: #ff9800;
+      margin-bottom: 10px;
+    }
+
+    .payment-instructions ol {
+      padding-left: 20px;
+      text-align: left;
+    }
+
+    .payment-instructions li {
+      margin-bottom: 8px;
+    }
+
+    /* Order Confirmation */
+    #orderConfirmation {
+      display: none;
+      background: rgba(76, 175, 80, 0.15);
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px auto;
+      text-align: center;
+      border: 1px solid #4CAF50;
+    }
+
+    #orderConfirmation h3 {
+      color: #4CAF50;
+      margin-bottom: 15px;
+    }
+
+    #confirmationDetails {
+      margin: 15px 0;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+    }
+
+    /* New Service Badge */
+    .new-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #ff5722;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    /* Responsive Design */
+    @media (min-width: 768px) {
+      .container {
+        max-width: 750px;
+      }
+      
+      .plans-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .plan {
+        width: calc(50% - 20px);
+      }
+    }
+
+    @media (min-width: 992px) {
+      .container {
+        max-width: 970px;
+      }
+      
+      .plan {
+        width: calc(33.333% - 20px);
+      }
+    }
+
+    /* Fix for mobile viewport */
+    @media (max-width: 480px) {
+      .plan {
+        padding: 15px;
+      }
+      
+      .plan img {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .plan h2 {
+        font-size: 18px;
+      }
+      
+      .buy-btn {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="https://i.ibb.co/6RyFfrLR/images-15.jpg" alt="Logo">
+      <h1>OTT Subscription Store</h1>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="plans-container">
+      <div class="plan">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube Premium">
+        <h2>YouTube Premium</h2>
+        <div class="price-options">
+          <div>1 Month: ₹29</div>
+          <div>2 Months: ₹59</div>
+          <div class="best-value">12 Months: ₹299 (Save 15%)</div>
+        </div>
+        <select id="youtubePlan">
+          <option value="29">1 Month - ₹29</option>
+          <option value="59">2 Months - ₹59</option>
+          <option value="299">12 Months - ₹299</option>
+        </select>
+        <button class="buy-btn" onclick="showQR('YouTube Premium')">Buy Now</button>
+      </div>
+
+      <div class="plan">
+        <span class="new-badge">NEW</span>
+        <img src="https://i.ibb.co/xtdt47kL/file-00000000abc861fb8f99d72edcc5e7d7.png" alt="PW x Next Toppers">
+        <h2>PW x Next Toppers</h2>
+        <div class="price-options">
+          <div class="best-value">All Classes & Courses (Pro): ₹99</div>
+        </div>
+        <select id="pwPlan">
+          <option value="99">All Classes & Courses - ₹99</option>
+        </select>
+        <button class="buy-btn" onclick="showQR('PW x Next Toppers')">Buy Now</button>
+      </div>
+
+      <div class="plan">
+        <img src="https://i.ibb.co/vCWFJWyw/images-1.png" alt="Crunchyroll">
+        <h2>Crunchyroll</h2>
+        <div class="price-options">
+          <div>1 Month: ₹5</div>
+          <div class="best-value">12 Months: ₹99 (Save 35%)</div>
+        </div>
+        <select id="crunchyrollPlan">
+          <option value="5">1 Month - ₹5</option>
+          <option value="99">12 Months - ₹99</option>
+        </select>
+        <button class="buy-btn" onclick="showQR('Crunchyroll')">Buy Now</button>
+      </div>
+
+      <div class="plan">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png" alt="Amazon Prime">
+        <h2>Amazon Prime</h2>
+        <div class="price-options">
+          <div>1 Month: ₹49</div>
+          <div class="best-value">6 Months: ₹79 (Save 33%)</div>
+        </div>
+        <select id="primePlan">
+          <option value="39">1 Month - ₹49</option>
+          <option value="79">6 Months - ₹79</option>
+        </select>
+        <button class="buy-btn" onclick="showQR('Amazon Prime')">Buy Now</button>
+      </div>
+      
+      <div class="plan">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix">
+        <h2>Netflix 4K Plan</h2>
+        <div class="price-options">
+          <div>1 Month: ₹99</div>
+        </div>
+        <select id="netflixPlan">
+          <option value="99">1 Month - ₹99</option>
+        </select>
+        <button class="buy-btn" onclick="showQR('Netflix 4K Plan')">Buy Now</button>
+      </div>
+      
+      <div class="plan">
+        <img src="https://i.ibb.co/JFqp1f41/download.png" alt="Minecraft">
+        <h2>Minecraft Premium</h2>
+        <div class="price-options">
+          <div>Lifetime Account: ₹299</div>
+        </div>
+        <select id="minecraftPlan">
+          <option value="299">Lifetime Account - ₹299</option>
+        </select>
+        <button class="buy-btn" onclick="showQR('Minecraft Premium')">Buy Now</button>
+      </div>
+      
+      <!-- New Services -->
+      <div class="plan">
+        <span class="new-badge">NEW</span>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" alt="ChatGPT Pro">
+        <h2>ChatGPT Pro</h2>
+        <div class="price-options">
+          <div>1 Month: ₹189</div>
+          <div class="best-value">3 Months: ₹499 (Save 7%)</div>
+        </div>
+        <select id="chatgptPlan">
+          <option value="179">1 Month - ₹189</option>
+          <option value="499">3 Months - ₹499</option>
+        </select>
+        <button class="buy-btn" onclick="showQR('ChatGPT Pro')">Buy Now</button>
+      </div>
+      
+      <div class="plan">
+        <span class="new-badge">NEW</span>
+        <img src="https://i.ibb.co/vvzTHfRt/images-6.jpg" alt="Roblox">
+        <h2>Roblox Gamepass</h2>
+        <div class="price-options">
+          <div>1,000 Robux: ₹500</div>
+          <div class="best-value">2,800 Robux: ₹1299 (Save 7%)</div>
+        </div>
+        <select id="robloxPlan">
+          <option value="500">1,000 Robux - ₹500</option>
+          <option value="1299">2,800 Robux - ₹1299</option>
+        </select>
+        <button class="buy-btn" onclick="showQR('Roblox Gamepass')">Buy Now</button>
+      </div>
+      
+      <div class="plan">
+        <span class="new-badge">NEW</span>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Xbox_one_logo.svg" alt="Gamepass">
+        <h2>Xbox Gamepass</h2>
+        <div class="price-options">
+          <div>1 Month: ₹299</div>
+          <div class="best-value">3 Months: ₹799 (Save 11%)</div>
+        </div>
+        <select id="gamepassPlan">
+          <option value="299">1 Month - ₹299</option>
+          <option value="799">3 Months - ₹799</option>
+        </select>
+        <button class="buy-btn" onclick="showQR('Xbox Gamepass')">Buy Now</button>
+      </div>
+      
+      <div class="plan">
+        <span class="new-badge">NEW</span>
+        <img src="https://i.ibb.co/ccHY4350/360-F-1597640932-I6jcqy-Gjg-Ym7-Db98w-GFq-IEk-ZO4-OSUJ8x.jpg" alt="Ultra Bomber">
+        <h2>Ultra Call/SMS/WhatsApp Bomber</h2>
+        <div class="price-options">
+          <div>Monthly: ₹249</div>
+          <div class="best-value">Lifetime: ₹999 (Save 66%)</div>
+        </div>
+        <select id="bomberPlan">
+          <option value="249">Monthly - ₹249</option>
+          <option value="999">Lifetime - ₹999</option>
+        </select>
+        <button class="buy-btn" onclick="showQR('Ultra Bomber')">Buy Now</button>
+      </div>
+    </div>
+
+    <div id="payment">
+      <h2>Complete Your Payment</h2>
+      
+      <div class="qr-container">
+        <!-- Updated QR Code -->
+        <img src="https://i.ibb.co/7tTx5Sdj/Screenshot-2025-09-05-08-35-10-77-40deb401b9ffe8e1df2f1cc5ba480b12.jpg" alt="UPI QR Code">
+      </div>
+      
+      <div class="payment-instructions">
+        <h3>Payment Instructions</h3>
+        <ol>
+          <li>Open your UPI payment app (Google Pay, PhonePe, Paytm, etc.)</li>
+          <li>Tap on "Scan QR Code"</li>
+          <li>Scan the QR code above</li>
+          <li>Enter the exact amount shown below</li>
+          <li>Complete the payment</li>
+          <li>Fill in the transaction details and submit the form</li>
+        </ol>
+      </div>
+      
+      <p id="orderDetails"></p>
+
+      <form id="orderForm" action="https://formspree.io/f/xrbazzag" method="POST">
+        <input type="text" name="transaction_id" placeholder="Transaction ID (UTR)" required>
+        <input type="email" name="gmail" placeholder="Your Gmail" required>
+        <input type="text" name="whatsapp" placeholder="WhatsApp Number" required>
+        <input type="hidden" name="order_plan" id="order_plan">
+        <input type="hidden" name="order_amount" id="order_amount">
+        <input type="hidden" name="order_duration" id="order_duration">
+        <button type="submit">Submit Order</button>
+      </form>
+    </div>
+    
+    <div id="orderConfirmation">
+      <h3>Order Confirmed!</h3>
+      <p>Thank you for your purchase. Your order details have been recorded.</p>
+      <div id="confirmationDetails"></div>
+      <p>We will process your order within 24 hours. You will receive your account details on your WhatsApp number.</p>
+      <p>For any queries, contact our support team.</p>
+    </div>
+  </div>
+  
+  <!-- Support Button -->
+  <div class="support-btn" onclick="openSupport()">
+    <i class="fas fa-headset"></i>
+  </div>
+  
+  <!-- Support Modal -->
+  <div class="support-modal" id="supportModal">
+    <div class="support-content">
+      <span class="close-btn" onclick="closeSupport()">&times;</span>
+      <h3>Contact Support</h3>
+      <p>Need help? Reach out to us:</p>
+      <a href="tel:+917457945493">+91 7457945493</a>
+      <a href="https://www.instagram.com/raj_zxxt" target="_blank">Instagram: @raj_zxxt</a>
+      <a href="mailto:arnavsingh98001@gmail.com">arnavsingh98001@gmail.com</a>
+    </div>
+  </div>
+
+  <script>
+    // Store current order details
+    let currentOrder = {
+      plan: '',
+      amount: 0,
+      duration: ''
+    };
+
+    function showQR(plan) {
+      let amount = 0;
+      let duration = '';
+      
+      if(plan === "Crunchyroll") {
+        const select = document.getElementById("crunchyrollPlan");
+        amount = parseInt(select.value);
+        duration = select.options[select.selectedIndex].text;
+      }
+      if(plan === "YouTube Premium") {
+        const select = document.getElementById("youtubePlan");
+        amount = parseInt(select.value);
+        duration = select.options[select.selectedIndex].text;
+      }
+      if(plan === "Amazon Prime") {
+        const select = document.getElementById("primePlan");
+        amount = parseInt(select.value);
+        duration = select.options[select.selectedIndex].text;
+      }
+      if(plan === "Netflix 4K Plan") {
+        const select = document.getElementById("netflixPlan");
+        amount = parseInt(select.value);
+        duration = select.options[select.selectedIndex].text;
+      }
+      if(plan === "Minecraft Premium") {
+        const select = document.getElementById("minecraftPlan");
+        amount = parseInt(select.value);
+        duration = select.options[select.selectedIndex].text;
+      }
+      if(plan === "ChatGPT Pro") {
+        const select = document.getElementById("chatgptPlan");
+        amount = parseInt(select.value);
+        duration = select.options[select.selectedIndex].text;
+      }
+      if(plan === "Roblox Gamepass") {
+        const select = document.getElementById("robloxPlan");
+        amount = parseInt(select.value);
+        duration = select.options[select.selectedIndex].text;
+      }
+      if(plan === "Xbox Gamepass") {
+        const select = document.getElementById("gamepassPlan");
+        amount = parseInt(select.value);
+        duration = select.options[select.selectedIndex].text;
+      }
+      if(plan === "Ultra Bomber") {
+        const select = document.getElementById("bomberPlan");
+        amount = parseInt(select.value);
+        duration = select.options[select.selectedIndex].text;
+      }
+      if(plan === "PW x Next Toppers") {
+        const select = document.getElementById("pwPlan");
+        amount = parseInt(select.value);
+        duration = select.options[select.selectedIndex].text;
+      }
+
+      // Store order details
+      currentOrder = {
+        plan: plan,
+        amount: amount,
+        duration: duration
+      };
+      
+      document.getElementById("payment").style.display = "block";
+      document.getElementById("orderDetails").innerHTML = 
+        `<strong>Plan: ${plan} | ${duration} | Amount: ₹${amount}</strong><br>
+         Please pay the exact amount to complete your order.`;
+      
+      // Set hidden form values
+      document.getElementById("order_plan").value = plan + " - " + duration;
+      document.getElementById("order_amount").value = amount;
+      document.getElementById("order_duration").value = duration;
+      
+      // Hide confirmation if shown previously
+      document.getElementById("orderConfirmation").style.display = "none";
+      
+      // Scroll to payment section
+      document.getElementById("payment").scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Handle form submission
+    document.getElementById("orderForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      // Show confirmation message
+      document.getElementById("confirmationDetails").innerHTML = 
+        `<strong>Plan:</strong> ${currentOrder.plan}<br>
+         <strong>Duration:</strong> ${currentOrder.duration}<br>
+         <strong>Amount:</strong> ₹${currentOrder.amount}<br>
+         <strong>Order Date:</strong> ${new Date().toLocaleString()}`;
+      
+      document.getElementById("orderConfirmation").style.display = "block";
+      document.getElementById("payment").style.display = "none";
+      
+      // Scroll to confirmation
+      document.getElementById("orderConfirmation").scrollIntoView({ behavior: 'smooth' });
+      
+       // Actually submit the form to Formspree
+      // Create a temporary iframe to submit the form without redirect
+      const tempForm = document.createElement("iframe");
+      tempForm.style.display = "none";
+      document.body.appendChild(tempForm);
+      
+      this.target = "hiddenFrame";
+      this.submit();
+      
+      // Reset the form after a delay
+      setTimeout(() => {
+        this.reset();
+      }, 1000);
+    });
+    
+    function openSupport() {
+      document.getElementById("supportModal").style.display = "flex";
+    }
+    
+    function closeSupport() {
+      document.getElementById("supportModal").style.display = "none";
+    }
+    
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById("supportModal");
+      if (event.target == modal) {
+        closeSupport();
+      }
+    }
+    
+    // Make buttons more responsive on mobile
+    document.addEventListener('touchstart', function() {}, false);
+  </script>
+
+</body>
+</html>
